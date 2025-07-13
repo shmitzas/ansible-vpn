@@ -34,10 +34,10 @@ sed -i 's/\r$//' setup.sh
 
 - Fully automated SSH Hardening, UFW, Traefik reverse proxy, WG-Easy setup
     ```bash
-    ansible-playbook -i inventory/hosts.yml site.yml
+    ansible-playbook -i inventory/hosts site.yml
     ```
 
 - Limit FULL setup only for specific host
     ```bash
-    ansible-playbook -i inventory/hosts.yml site.yml -l us.tunelis.online
+    ansible-playbook -i inventory/hosts site.yml -l vps.example.com
     ```

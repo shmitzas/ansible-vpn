@@ -1,0 +1,6 @@
+all:
+  hosts:
+    - lt.tunelis.online
+    - fr.tunelis.online
+    - uk.tunelis.online
+    - us.tunelis.online

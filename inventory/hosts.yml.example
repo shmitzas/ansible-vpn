@@ -1,4 +1,0 @@
-all:
-  hosts:
-    - vpn.example.com
-    - vpn2.example.com

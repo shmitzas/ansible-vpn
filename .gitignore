@@ -5,4 +5,4 @@
 inventory/files/key.pub
 inventory/files/key
 inventory/group_vars/all.yml
-inventory/hosts.yml
+inventory/hosts
