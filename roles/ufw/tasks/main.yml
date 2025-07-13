@@ -1,0 +1,41 @@
+---
+- name: Install UFW
+  apt:
+    name: ufw
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Allow SSH (22/tcp)
+  ufw:
+    rule: allow
+    port: '22'
+    proto: tcp
+  become: yes
+
+- name: Allow HTTP (80/tcp)
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+  become: yes
+
+- name: Allow HTTPS (443/tcp)
+  ufw:
+    rule: allow
+    port: '443'
+    proto: tcp
+  become: yes
+
+- name: Allow WireGuard (51820/udp)
+  ufw:
+    rule: allow
+    port: '51820'
+    proto: udp
+  become: yes
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+    policy: allow
+  become: yes

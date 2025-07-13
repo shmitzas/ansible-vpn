@@ -1,0 +1,20 @@
+---
+- name: Create wg-easy config directory
+  file:
+    path: /etc/docker/containers/wg-easy
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes
+
+- name: Copy wg-easy docker-compose config
+  template:
+    src: wg-easy-docker-compose.yml.j2
+    dest: /etc/docker/containers/wg-easy/docker-compose.yml
+  become: yes
+
+- name: Start wg-easy container
+  community.docker.docker_compose_v2:
+    project_src: /etc/docker/containers/wg-easy
+    state: present

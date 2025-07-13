@@ -1,0 +1,32 @@
+---
+- name: Ensure PubkeyAuthentication is enabled
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PubkeyAuthentication'
+    line: 'PubkeyAuthentication yes'
+  become: yes
+
+- name: Disable PasswordAuthentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+  become: yes
+
+- name: Add authorized SSH key for root
+  authorized_key:
+    user: root
+    key: "{{ lookup('file', 'inventory/files/key.pub') }}"
+  become: yes
+
+- name: Remove root password
+  user:
+    name: root
+    password: '*'
+  become: yes
+
+- name: Restart SSH service
+  service:
+    name: sshd
+    state: restarted
+  become: yes

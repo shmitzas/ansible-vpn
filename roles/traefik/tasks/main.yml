@@ -1,0 +1,53 @@
+---
+- name: Create Traefik container and volume directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - /etc/docker/containers/traefik
+    - /etc/docker/volumes/traefik
+  become: yes
+
+- name: Copy Traefik docker-compose config
+  template:
+    src: traefik-docker-compose.yml.j2
+    dest: /etc/docker/containers/traefik/docker-compose.yml
+  become: yes
+
+- name: Copy traefik.yml config
+  template:
+    src: traefik.yml.j2
+    dest: /etc/docker/volumes/traefik/traefik.yml
+  become: yes
+
+- name: Copy traefik_dynamic.yml config
+  template:
+    src: traefik_dynamic.yml.j2
+    dest: /etc/docker/volumes/traefik/traefik_dynamic.yml
+  become: yes
+
+- name: Create acme.json file
+  file:
+    path: /etc/docker/volumes/traefik/acme.json
+    state: touch
+    owner: root
+    group: root
+    mode: '0600'
+  become: yes
+
+- name: Create traefik docker network
+  community.docker.docker_network:
+    name: traefik
+    state: present
+    driver: bridge
+    ipam_config:
+      - subnet: 172.20.0.0/16
+  become: yes
+
+- name: Start Traefik container
+  community.docker.docker_compose_v2:
+    project_src: /etc/docker/containers/traefik
+    state: present
